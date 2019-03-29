@@ -1,0 +1,67 @@
+<style>svg {border:1px solid black}</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js"></script>
+<script>
+var canvas = d3.select("div#hereComesTheCanvas").append("svg").attr("width", 400).attr("height", 400).on("click", addPoint).style("background-color","lightgrey");
+var counter = 0;
+function addPoint(evt) {
+  if (d3.event.defaultPrevented) return;
+  
+  function composeJsonPointSetString() {
+    var locations = d3.selectAll("circle")[0].map(function(el) {
+      return {
+        "id":  d3.select(el).attr("id"),
+         "x": (+d3.select(el).attr("cx"))/4,
+         "y": (+d3.select(el).attr("cy"))/4
+      };
+    });
+    
+    $("#jsonPoints").val(JSON.stringify(locations));
+    $("#jsonPoints").trigger("change");
+  }
+var drag = d3.behavior.drag()
+    .on("drag", function(){
+      x = +d3.select(this).attr("cx");
+      y = +d3.select(this).attr("cy");
+      
+      x += d3.event.dx;
+      y += d3.event.dy;
+      
+      d3.select(this).attr("cx",x);
+      d3.select(this).attr("cy",y);
+      
+      // see (C0)
+      d3.event.stopPropagation();
+    })
+    .on("dragend", function(){
+      composeJsonPointSetString();
+      
+      // see (C0)
+      d3.event.stopPropagation();
+    });
+  var mouse = d3.mouse(this);
+  var x = mouse[0];
+  var y = mouse[1];
+  d3.select(this)
+      .append("circle")
+      .attr("r", 10).attr("cx", x).attr("cy", y).attr("id","c"+counter)
+      .call(drag)
+      .on("click", 
+          function () {
+            // see (C0)
+            if (d3.event.defaultPrevented) return;
+            
+              d3.select(this).remove();
+              d3.event.stopPropagation();
+              composeJsonPointSetString();
+          }
+      )
+      .append("svg:title").text("c"+counter);
+  
+  counter++;
+  
+  composeJsonPointSetString();
+}
+</script>
+
+
+<!-- Reference : https://cdnjs.com/libraries/d3 -->
