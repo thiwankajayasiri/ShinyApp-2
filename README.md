@@ -1,4 +1,7 @@
 # ShinyApp-2
 K mean clustering / Hclustering Shiny App demo 
 
-[!alt text](https://github.com/thiwankajayasiri/ShinyApp-2/blob/master/330px-Kernel_Machine.svg.png)
+<p align="center">
+  <img src="https://github.com/thiwankajayasiri/ShinyApp-2/blob/master/330px-Kernel_Machine.svg.png" width="650" title="K-Mean Clustering">
+</p>
+
